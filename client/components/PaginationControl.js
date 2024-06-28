@@ -1,0 +1,27 @@
+import PaginationControls from '@/components/PaginationControls';
+import Image from 'next/image';
+
+
+export default function Home({ searchParams }) {
+  const page = searchParams['page'] || '1';
+  const per_page = searchParams['per_page'] || '5';
+
+  // mocked, skipped and limited in the real app
+  const start = (parseInt(page) - 1) * parseInt(per_page); // 0, 5, 10 ...
+  const end = start + parseInt(per_page); // 5, 10, 15 ...
+
+  const entries = data.slice(start, end);
+
+  return (
+    <div className='flex flex-col gap-2 items-center'>
+      {entries.map((entry) => (
+        <p key={entry}>{entry}</p>
+      ))}
+
+      <PaginationControls
+        hasNextPage={end < data.length}
+        hasPrevPage={start > 0}
+      />
+    </div>
+  );
+}
