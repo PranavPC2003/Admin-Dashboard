@@ -1,7 +1,7 @@
 // import node module libraries
 import Link from 'next/link';
-import { ProgressBar, Col, Row, Card, Table, Image, Pagination } from 'react-bootstrap';
-import { Suspense,use } from 'react';
+import { Col, Row, Card, Table, Image, Pagination } from 'react-bootstrap';
+import { Suspense, use} from 'react';
 import { useRouter, useSearchParams } from 'next/navigation'
 // import required data files
 // import ActiveProjectsData from "data/dashboard/ActiveProjectsData";
@@ -21,11 +21,10 @@ const RecentActivity = () => {
     const page = searchParams.get('page') ?? '1';
     const per_page = searchParams.get('per_page') ?? '5';
     const r_data = use(ractivity_data(page, per_page), { cache: 'no-store' });
-    // console.log(r_data);
 
     return (
         <Row className="mt-6">
-            <Col md={12} xs={12}>   
+            <Col md={12} xs={12}>
                 <Card>
                     <Card.Header className="bg-white  py-4">
                         <h4 className="mb-0">Recent Activity</h4>
@@ -90,19 +89,19 @@ const RecentActivity = () => {
                         {/* <Link href="#" className="link-primary">View All Projects</Link> */}
                         <Pagination className="justify-content-end">
                             <Pagination.Prev onClick={() => {
-                                router.push(`?page=${Number(page) - 1}&per_page=${per_page}`)
+                                router.replace(`/?page=${Number(page) - 1}&per_page=${per_page}`, { scroll: false })
                             }} disabled={page === '1'}>Previous</Pagination.Prev>
                             <Pagination.Item onClick={() => {
-                                router.push(`?page=${Number(page) -1}&per_page=${per_page}`)
+                                router.replace(`/?page=${Number(page) - 1}&per_page=${per_page}`, { scroll: false })
                             }} disabled={page === '1'}>{parseInt(page) - 1}</Pagination.Item>
                             <Pagination.Item onClick={() => {
-                                router.push(`?page=${Number(page)}&per_page=${per_page}`)
+                                router.replace(`/?page=${Number(page)}&per_page=${per_page}`, { scroll: false })
                             }}>{page}</Pagination.Item>
                             <Pagination.Item onClick={() => {
-                                router.push(`?page=${Number(page) + 1}&per_page=${per_page}`)
+                                router.replace(`/?page=${Number(page) + 1}&per_page=${per_page}`, { scroll: false })
                             }} disabled={page === r_data.totalPages.toString()}>{parseInt(page) + 1}</Pagination.Item>
                             <Pagination.Next onClick={() => {
-                                router.push(`?page=${Number(page) + 1}&per_page=${per_page}`)
+                                router.replace(`/?page=${Number(page) + 1}&per_page=${per_page}`, { scroll: false })
                             }} disabled={page === r_data.totalPages.toString()}>Next</Pagination.Next>
                         </Pagination>
                     </Card.Footer>

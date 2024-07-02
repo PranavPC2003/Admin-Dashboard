@@ -2,7 +2,7 @@ import express from 'express';
 import 'dotenv/config';
 import expressLayout from 'express-ejs-layouts';
 import cors from 'cors';
-const router = express.Router();
+import jwt from 'jsonwebtoken';
 
 const app = express();
 app.use(cors())
@@ -54,6 +54,7 @@ app.get('/api/profile/aboutMe', async (req, res) => {
         const users = await UsersData.findOne();
 
         return res.json(users);
+        
 
     } catch (error) {
         console.error("Error fetching users:", error);
@@ -122,10 +123,17 @@ app.post('/signin', (req, res) => {
             const hashedPassword = data[0].password;
             bcrypt.compare(password, hashedPassword).then(result => {
                 if (result) {
+                    const payload = {
+                        username: data[0].username,
+                        email: data[0].email,
+                        course: data[0].course,
+                        image_src: data[0].image_src
+                    }
+                    const token = jwt.sign(payload, "Sumimasen", { expiresIn: "10000000000000000000" });
                     return res.json({
                         status: "SUCCESS",
                         message: "SignIn Successful",
-                        data: data
+                        data: token
                     })
                 } else {
                     res.json({
@@ -181,10 +189,12 @@ app.get('/my_orders',async (req, res) =>{
         const page = parseInt(req.query.page) || 1;
         const per_page = parseInt(req.query.per_page) || 5;
         const skip = (page - 1) * per_page;
+        const token = req.headers['userinfo'];
+        const decodedToken = JSON.stringify(jwt.verify(token,"Sumimasen"))
+        const course = JSON.parse(decodedToken).course;
 
-
-        const orders = await Orders.find().skip(skip).limit(per_page);
-        const totalItems = await Orders.countDocuments();
+        const orders = await Orders.find({ course: course}).skip(skip).limit(per_page);
+        const totalItems = await Orders.countDocuments({ course: course });
 
         return res.json({
             data: orders,
