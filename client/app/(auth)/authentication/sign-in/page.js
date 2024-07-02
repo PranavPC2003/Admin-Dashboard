@@ -1,25 +1,22 @@
 'use client'
 
-// import node module libraries
 import { Row, Col, Card, Form, Button, Image } from 'react-bootstrap';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import useMounted from 'hooks/useMounted';
-import axios from 'axios';
+import { login } from 'lib';
+import { useRouter } from 'next/navigation';
+
 
 const SignIn = () => {
+  const router = useRouter();
   const hasMounted = useMounted();
   const { register, handleSubmit } = useForm();
 
   const onSubmitFunc = async (data) => {
     try {
-      await axios.post('http://localhost:8000/signin', {
-        email: data.email,
-        password: data.password
-      })
-      .then(res => {
-        console.log(res);
-      })
+      await login(data);
+      router.push('/');
     } catch (error) {
       console.error(error);
     }
@@ -57,7 +54,7 @@ const SignIn = () => {
                   <Form.Control
                     type="password"
                     name="password"
-                    placeholder="**************"
+                    placeholder=""
                     required="Password empty!!!"
                     {...register('password')}
                   />
@@ -94,4 +91,4 @@ const SignIn = () => {
   )
 }
 
-export default SignIn;
+export default SignIn;

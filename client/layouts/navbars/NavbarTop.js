@@ -1,4 +1,5 @@
-// import node module libraries
+"use client"
+
 import { Menu } from 'react-feather';
 import Link from 'next/link';
 import {

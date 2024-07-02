@@ -9,6 +9,14 @@ const userAuth = new Schema({
         type: String,
         required: true
     },
+    course:{
+        type: String,
+        required: true
+    },
+    image_src:{
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true

@@ -5,7 +5,9 @@ import { use } from 'react';
 
 
 const AboutMe = () => {
+
     const aboutMe = use(user_aboutMe());
+
     return (
         <Col xl={6} lg={12} md={12} xs={12} className="mb-6">
             {/* card */}
